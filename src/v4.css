@@ -1,0 +1,12 @@
+.v4-shell .canvas-frame{background:radial-gradient(circle at 50% 42%,#20242a 0,#17191d 58%,#111216 100%)}
+.critter-svg.v4{width:80%;max-width:460px;overflow:visible;filter:drop-shadow(0 24px 22px rgba(0,0,0,.24))}
+.critter-svg.v4 g,.critter-svg.v4 path,.critter-svg.v4 ellipse{transform-box:view-box}
+.v4-shell .mode-tabs button[aria-pressed="true"]{box-shadow:0 0 0 1px rgba(255,255,255,.09) inset,0 7px 20px rgba(47,145,173,.22)}
+.v4-shell .species-tabs button{min-width:112px}
+.v4-shell .species-tabs svg{width:35px;height:35px}
+.v4-shell .expression-list button{grid-template-columns:34px 1fr}
+.face-dot{display:grid;place-items:center;width:30px;height:30px;border-radius:10px;background:#1b1d22;border:1px solid #303238}
+.face-dot i{display:block;width:12px;height:5px;border:2px solid currentColor;border-top:0;border-radius:0 0 10px 10px;opacity:.8}
+.v4-shell .expression-list button[aria-pressed="true"] .face-dot{background:#2f91ad;border-color:#78c9df}
+.v4-shell .motion-note p{max-width:310px;line-height:1.55}
+@media(max-width:600px){.critter-svg.v4{width:90%}.v4-shell .species-tabs button{min-width:82px}}
