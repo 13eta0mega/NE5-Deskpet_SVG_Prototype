@@ -1,0 +1,91 @@
+.critter-svg.v3 .ear-pose { transform-box: view-box; }
+.critter-svg.v3 .listen-ear { transform-box: view-box; }
+.critter-svg.v3 .listen-ear-left { transform-origin: var(--ear-lx) var(--ear-ly); }
+.critter-svg.v3 .listen-ear-right { transform-origin: var(--ear-rx) var(--ear-ry); }
+.critter-svg.v3 .listen-face { transform-box: view-box; transform-origin: 50% 64%; }
+.critter-svg.v3 .tail-motion { transform-box: view-box; transform-origin: 72% 79%; animation: tail-idle 2.9s ease-in-out infinite; }
+.critter-svg.v3 .face-patch { opacity: .98; }
+.critter-svg.v3 .nose { transform-box: fill-box; transform-origin: center; }
+.critter-svg.v3 .brow { transition: opacity .16s ease; }
+.critter-svg.v3 .mouth-rig { transform-box: view-box; transform-origin: 50% 65%; }
+.critter-svg.v3 .voice-mouth { opacity: 0; transform-box: fill-box; transform-origin: center; }
+.critter-svg.v3 .expression-mouth { opacity: 1; }
+
+.critter-svg.v3.mode-listening .activity-layer { animation: v3-listen-body 1.85s cubic-bezier(.45,.05,.2,1) infinite; }
+.critter-svg.v3.mode-listening .listen-face { animation: v3-listen-face 1.85s cubic-bezier(.45,.05,.2,1) infinite; }
+.critter-svg.v3.mode-listening .listen-ear-left { animation: v3-ear-left 1.85s cubic-bezier(.45,.05,.2,1) infinite; }
+.critter-svg.v3.mode-listening .listen-ear-right { animation: v3-ear-right 1.85s cubic-bezier(.45,.05,.2,1) infinite; }
+.critter-svg.v3.mode-listening .tail-motion { animation-duration: 1.55s; }
+
+.critter-svg.v3.mode-talking .expression-mouth { opacity: 0; }
+.critter-svg.v3.mode-talking .voice-mouth { opacity: 1; animation: v3-voice-open .34s ease-in-out infinite alternate; }
+.critter-svg.v3.mode-talking .voice-cavity { transform-box: fill-box; transform-origin: center; animation: v3-cavity .34s cubic-bezier(.2,.7,.2,1) infinite alternate; }
+.critter-svg.v3.mode-talking .voice-tongue { transform-box: fill-box; transform-origin: center; animation: v3-tongue .34s ease-in-out infinite alternate; }
+.critter-svg.v3.mode-talking .listen-face { animation: v3-talk-head .68s ease-in-out infinite; }
+.critter-svg.v3.mode-talking .handL,
+.critter-svg.v3.mode-talking .handR { transform-box: fill-box; transform-origin: center; }
+
+.critter-svg.v3.is-transitioning.mode-listening .activity-layer,
+.critter-svg.v3.is-transitioning.mode-listening .listen-face,
+.critter-svg.v3.is-transitioning.mode-listening .listen-ear { animation-play-state: paused; }
+.critter-svg.v3.is-transitioning.mode-talking .voice-mouth,
+.critter-svg.v3.is-transitioning.mode-talking .voice-cavity,
+.critter-svg.v3.is-transitioning.mode-talking .voice-tongue { animation-duration: .52s; }
+
+@keyframes tail-idle {
+  0%,100% { transform: rotate(-2deg); }
+  50% { transform: rotate(3deg); }
+}
+@keyframes v3-listen-body {
+  0%,100% { transform: translateY(0) rotate(-.5deg); }
+  25% { transform: translateY(-1.5px) rotate(-2.4deg); }
+  55% { transform: translateY(-.8px) rotate(1.2deg); }
+  78% { transform: translateY(-1.2px) rotate(-1.4deg); }
+}
+@keyframes v3-listen-face {
+  0%,100% { transform: translate(0,0) rotate(0); }
+  25% { transform: translate(2.2px,-1.3px) rotate(1.8deg); }
+  55% { transform: translate(-1.4px,-.4px) rotate(-1deg); }
+  78% { transform: translate(1.2px,-.8px) rotate(.8deg); }
+}
+@keyframes v3-ear-left {
+  0%,100% { transform: rotate(0deg); }
+  18% { transform: rotate(-8deg); }
+  32% { transform: rotate(4deg); }
+  57% { transform: rotate(-4deg); }
+  75% { transform: rotate(2deg); }
+}
+@keyframes v3-ear-right {
+  0%,100% { transform: rotate(0deg); }
+  12% { transform: rotate(-3deg); }
+  28% { transform: rotate(10deg); }
+  46% { transform: rotate(-5deg); }
+  70% { transform: rotate(4deg); }
+}
+@keyframes v3-voice-open {
+  from { transform: translateY(-.5px) scale(.96,.8); }
+  to { transform: translateY(1px) scale(1.08,1.16); }
+}
+@keyframes v3-cavity {
+  from { transform: scale(.86,.58); }
+  to { transform: scale(1.04,1.28); }
+}
+@keyframes v3-tongue {
+  from { transform: translateY(-.2px) scaleX(.9); opacity: .72; }
+  to { transform: translateY(1.2px) scaleX(1.08); opacity: 1; }
+}
+@keyframes v3-talk-head {
+  0%,100% { transform: translateY(0) rotate(0); }
+  50% { transform: translateY(-.8px) rotate(.45deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .critter-svg.v3 .tail-motion,
+  .critter-svg.v3.mode-listening .activity-layer,
+  .critter-svg.v3.mode-listening .listen-face,
+  .critter-svg.v3.mode-listening .listen-ear,
+  .critter-svg.v3.mode-talking .voice-mouth,
+  .critter-svg.v3.mode-talking .voice-cavity,
+  .critter-svg.v3.mode-talking .voice-tongue,
+  .critter-svg.v3.mode-talking .listen-face { animation: none !important; }
+}
