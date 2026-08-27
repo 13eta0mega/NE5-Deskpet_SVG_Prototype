@@ -11,24 +11,39 @@ Create original SVG characters that feel visually compatible with the molauu Cri
 
 1. Read `references/design-language.md` before drawing any character.
 2. Read `references/animation-architecture.md` before implementing transitions or interactive modes.
-3. Define the character as a small stable anatomy set. Prefer exactly these 10 shared parts unless the request requires more: `legL`, `legR`, `earL`, `earR`, `body`, `eyeL`, `eyeR`, `mouth`, `handL`, `handR`.
+3. Define the character as a small stable anatomy set. Start from the classic 10 shared parts (`legL`, `legR`, `earL`, `earR`, `body`, `eyeL`, `eyeR`, `mouth`, `handL`, `handR`) and add only shared expression parts that materially improve readability, such as cheeks or tears.
 4. Author every emotion/state on the same 200x200 viewBox and keep each shared part present in every state.
 5. Keep each path's command topology compatible across states. Prefer coordinate interpolation over a morph library. Do not solve ordinary expression changes with opacity crossfades.
 6. Render shared parts once and mutate geometry imperatively during transitions so React does not snap geometry to the destination state.
 7. Run idle motion continuously. During a state morph, attenuate idle amplitude toward 0.1 over roughly 40% of the transition, then restore it after completion.
 8. Add listening and talking as continuous modulation of the live geometry, not as image/state swaps. Listening should move body/ears/face coherently. Talking should reshape the existing mouth geometry while preserving the current emotion.
 9. Test rapid state switching. A new transition must begin from the currently displayed geometry, not from the previous named state.
-10. Check the result against `references/quality-checklist.md` before shipping.
+10. Before shipping, render every named state together as a labeled contact sheet and inspect the actual rendered pixels. Revise any state whose emotion is ambiguous, whose anatomy breaks, or whose face looks uncanny.
+11. Expose a deterministic QA route (for example `?qa=1`) that renders all states from the same production state data, so visual regression checks do not depend on clicking through the app manually.
+12. Check the result against `references/quality-checklist.md` before shipping.
 
 ## Non-negotiable visual rules
 
 - Use a 200x200 canvas unless an existing project requires another size.
 - Use large soft body masses, minimal anatomy, flat fills, and no decorative outline around the whole character.
-- Keep eyes tiny and dark; keep the mouth a simple dark round-capped stroke or a very small filled opening when speaking.
+- Keep eyes tiny and dark. Let emotion come from eye scale/tilt/position plus body, ears, and hands rather than adding eyebrows by default.
+- The resting mouth should be a simple dark round-capped bare stroke with `fill="none"`. Do not turn the mouth into a closed filled path that reads as lips or a black blob.
+- Speaking should deform the same mouth stroke into a small open curve. Use a filled mouth only when the user explicitly asks for that aesthetic.
 - Use hands/feet as simple circles, ellipses, or rounded rectangles.
-- Prefer one dominant body color plus one lighter secondary paw/face color and one dark facial color.
+- Prefer one dominant body color plus one lighter secondary paw color and one dark facial color.
 - Avoid gradients, drop shadows, glossy highlights, faux-3D shading, complex muzzles, eyebrows, inner-ear detailing, and excessive facial parts unless the user explicitly asks for them.
 - Do not copy coordinates, exact silhouettes, or palettes from molauu's example artwork. Match the design grammar, not the artwork.
+
+## Visual QA gate
+
+Do not call the character finished because the build passes. A release candidate must pass a rendered-state review:
+
+- Render all states at the real 200x200 viewBox and review them at both full size and thumbnail size.
+- Compare easily confused pairs such as excited/surprised, sad/worried, annoyed/sleepy, and happy/amused.
+- Verify ears stay attached, hands do not cover critical facial features, tears/blush are legible when used, and the feet remain grounded.
+- Verify the expression still reads when state labels are mentally ignored.
+- Reject lip-like mouth shapes, accidental filled mouth blobs, detached ears, over-large eyes, or deformed intermediate silhouettes.
+- Keep the generated contact sheet or deterministic QA page available in the project for the next iteration.
 
 ## Transition policy
 
