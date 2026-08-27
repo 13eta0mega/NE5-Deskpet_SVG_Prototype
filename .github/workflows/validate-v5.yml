@@ -25,5 +25,17 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Validate shared SVG topology
+        run: node scripts/validate-v5-model.mjs
+
+      - name: Generate 16-state visual QA sheet
+        run: node scripts/export-v5-qa.mjs
+
       - name: Build V5
         run: npm run build
+
+      - name: Upload visual QA sheet
+        uses: actions/upload-artifact@v4
+        with:
+          name: v5-visual-qa
+          path: public/v5-emotion-contact-sheet.svg
