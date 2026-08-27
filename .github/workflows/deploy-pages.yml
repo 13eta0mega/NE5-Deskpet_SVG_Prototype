@@ -1,4 +1,4 @@
-name: Deploy character-redesign-v4 to GitHub Pages
+name: Build and publish character-redesign-v4
 
 on:
   push:
@@ -7,19 +7,19 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
 concurrency:
-  group: pages
+  group: pages-v4-publish
   cancel-in-progress: true
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout V4 character branch
+      - name: Checkout V4 source
         uses: actions/checkout@v4
         with:
           ref: character-redesign-v4
@@ -33,13 +33,36 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build
+      - name: Build V4
         run: npm run build
+
+      - name: Checkout main publish branch
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          path: publish
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Sync built site into main
+        shell: bash
+        run: |
+          rm -rf publish/assets
+          cp dist/index.html publish/index.html
+          cp -R dist/assets publish/assets
+          touch publish/.nojekyll
+          cd publish
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html assets .nojekyll
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: publish V4 static build [skip ci]"
+            git push origin HEAD:main
+          fi
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
-      - name: Upload artifact
+      - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./dist
@@ -54,5 +77,3 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-
-# redeploy V4 after fixing GitHub Pages asset base
