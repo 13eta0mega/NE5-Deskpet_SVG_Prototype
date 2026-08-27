@@ -4,6 +4,7 @@
 .critter-svg.v3 .listen-ear-right { transform-origin: var(--ear-rx) var(--ear-ry); }
 .critter-svg.v3 .listen-face { transform-box: view-box; transform-origin: 50% 64%; }
 .critter-svg.v3 .tail-motion { transform-box: view-box; transform-origin: 72% 79%; animation: tail-idle 2.9s ease-in-out infinite; }
+.critter-svg.v3 .tail-motion path:nth-child(2) { fill: #F8E3CB !important; }
 .critter-svg.v3 .face-patch { opacity: .98; }
 .critter-svg.v3 .nose { transform-box: fill-box; transform-origin: center; }
 .critter-svg.v3 .brow { transition: opacity .16s ease; }
