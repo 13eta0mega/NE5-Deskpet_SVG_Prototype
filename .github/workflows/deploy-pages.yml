@@ -54,3 +54,5 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+# redeploy V4 after fixing GitHub Pages asset base
