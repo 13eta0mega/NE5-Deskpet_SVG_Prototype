@@ -8,7 +8,6 @@ const COLORS = { body:"#8CC9B1", feet:"#6EAA94", paws:"#B5E0CE", face:"#1F2523" 
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 const lerp=(a,b,t)=>a+(b-a)*t;
 const ease=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
-const easeSine=t=>-(Math.cos(Math.PI*t)-1)/2;
 
 const P=(x,y)=>({x,y});
 const add=(p,dx=0,dy=0)=>P(p.x+dx,p.y+dy);
@@ -56,8 +55,8 @@ function makeState(mods={}){
   const x1=mx-m.mouthW,x2=mx+m.mouthW;
   const tilt=Math.tan(m.mouthTilt*Math.PI/180)*m.mouthW;
   const upper=my-m.mouthSmile;
-  const lower=my+m.mouthOpen;
-  const mouth=`M${x1} ${my-tilt}C${mx-m.mouthW*.5} ${upper} ${mx-m.mouthW*.2} ${upper} ${mx} ${my}C${mx+m.mouthW*.2} ${upper} ${mx+m.mouthW*.5} ${upper} ${x2} ${my+tilt}${m.mouthOpen>0?`C${mx+m.mouthW*.45} ${lower} ${mx-m.mouthW*.45} ${lower} ${x1} ${my-tilt}Z`:""}`;
+  const lower=my+Math.max(0,m.mouthOpen);
+  const mouth=`M${x1} ${my-tilt}C${mx-m.mouthW*.5} ${upper} ${mx-m.mouthW*.2} ${upper} ${mx} ${my}C${mx+m.mouthW*.2} ${upper} ${mx+m.mouthW*.5} ${upper} ${x2} ${my+tilt}C${mx+m.mouthW*.45} ${lower} ${mx-m.mouthW*.45} ${lower} ${x1} ${my-tilt}Z`;
   return {
     paths:{
       legL:{tag:"rect",x:78,y:164+m.bodyY,width:21,height:30,rx:10.5,fill:COLORS.feet},
@@ -79,6 +78,7 @@ const STATES=Object.fromEntries(EMOTIONS.map(e=>[e.key,makeState(e.mods)]));
 function parseNumbers(str){return (String(str).match(/-?\d*\.?\d+(?:e[-+]?\d+)?/gi)||[]).map(Number)}
 function interpolateString(a,b,t){
   const numsA=parseNumbers(a),numsB=parseNumbers(b); let i=0;
+  if(numsA.length!==numsB.length) return b;
   return String(b).replace(/-?\d*\.?\d+(?:e[-+]?\d+)?/gi,()=>String(lerp(numsA[i],numsB[i++],t).toFixed(3)));
 }
 function snapshot(el,def){
@@ -105,7 +105,7 @@ function Critter({state,mode}){
   },[state]);
 
   useEffect(()=>{
-    let raf=0,last=performance.now();
+    let raf=0;
     const tick=(now)=>{
       const tr=transition.current;
       let morphing=false;
@@ -139,15 +139,15 @@ function Critter({state,mode}){
       const speech=talking?clamp(.5+.35*Math.sin(sec*17)+.15*Math.sin(sec*29),0,1):0;
       const mouth=refs.current.mouth;
       if(mouth&&talking&&!transition.current){
-        const base=STATES[currentState.current].paths.mouth.d;
-        const nums=parseNumbers(base);
-        if(nums.length>=14){
-          const cx=101,my=118,w=8+speech*5,open=1.5+speech*8;
-          mouth.setAttribute("d",`M${cx-w} ${my}C${cx-w*.5} ${my-1} ${cx-w*.2} ${my-1} ${cx} ${my}C${cx+w*.2} ${my-1} ${cx+w*.5} ${my-1} ${cx+w} ${my}C${cx+w*.45} ${my+open} ${cx-w*.45} ${my+open} ${cx-w} ${my}Z`);
-          mouth.setAttribute("fill",COLORS.face);
-        }
-      } else if(mouth&&!transition.current){ mouth.setAttribute("fill",STATES[currentState.current].paths.mouth.fill); }
-      raf=requestAnimationFrame(tick); last=now;
+        const cx=101,my=118,w=8+speech*5,open=1.5+speech*8;
+        mouth.setAttribute("d",`M${cx-w} ${my}C${cx-w*.5} ${my-1} ${cx-w*.2} ${my-1} ${cx} ${my}C${cx+w*.2} ${my-1} ${cx+w*.5} ${my-1} ${cx+w} ${my}C${cx+w*.45} ${my+open} ${cx-w*.45} ${my+open} ${cx-w} ${my}Z`);
+        mouth.setAttribute("fill",COLORS.face);
+      } else if(mouth&&!transition.current){
+        const stable=STATES[currentState.current].paths.mouth;
+        mouth.setAttribute("d",stable.d);
+        mouth.setAttribute("fill",stable.fill);
+      }
+      raf=requestAnimationFrame(tick);
     };
     raf=requestAnimationFrame(tick);return()=>cancelAnimationFrame(raf);
   },[]);
@@ -156,12 +156,15 @@ function Critter({state,mode}){
   const r=id=>el=>{refs.current[id]=el};
   return <svg className="mori-svg" viewBox="0 0 200 200" role="img" aria-label="Mori critter">
     <g ref={root} className="mori-rig">
-      <rect ref={r("legL")} {...first.legL}/><rect ref={r("legR")} {...first.legR}/>
+      <rect ref={r("legL")} x={first.legL.x} y={first.legL.y} width={first.legL.width} height={first.legL.height} rx={first.legL.rx} fill={first.legL.fill}/>
+      <rect ref={r("legR")} x={first.legR.x} y={first.legR.y} width={first.legR.width} height={first.legR.height} rx={first.legR.rx} fill={first.legR.fill}/>
       <path ref={r("earL")} d={first.earL.d} fill={first.earL.fill}/><path ref={r("earR")} d={first.earR.d} fill={first.earR.fill}/>
       <path ref={r("body")} d={first.body.d} fill={first.body.fill}/>
-      <ellipse ref={r("eyeL")} {...first.eyeL}/><ellipse ref={r("eyeR")} {...first.eyeR}/>
+      <ellipse ref={r("eyeL")} cx={first.eyeL.cx} cy={first.eyeL.cy} rx={first.eyeL.rx} ry={first.eyeL.ry} fill={first.eyeL.fill}/>
+      <ellipse ref={r("eyeR")} cx={first.eyeR.cx} cy={first.eyeR.cy} rx={first.eyeR.rx} ry={first.eyeR.ry} fill={first.eyeR.fill}/>
       <path ref={r("mouth")} d={first.mouth.d} stroke={first.mouth.stroke} strokeWidth={first.mouth.strokeWidth} strokeLinecap="round" strokeLinejoin="round" fill={first.mouth.fill}/>
-      <ellipse ref={r("handL")} {...first.handL}/><ellipse ref={r("handR")} {...first.handR}/>
+      <ellipse ref={r("handL")} cx={first.handL.cx} cy={first.handL.cy} rx={first.handL.rx} ry={first.handL.ry} fill={first.handL.fill}/>
+      <ellipse ref={r("handR")} cx={first.handR.cx} cy={first.handR.cy} rx={first.handR.rx} ry={first.handR.ry} fill={first.handR.fill}/>
     </g>
   </svg>
 }
