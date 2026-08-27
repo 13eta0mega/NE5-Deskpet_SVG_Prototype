@@ -63,6 +63,15 @@ button:focus-visible { outline: 2px solid #66bdd5; outline-offset: 2px; }
 .critter-svg:not(.mode-listening).energy-tense .activity-layer { animation: tense .22s ease-in-out infinite alternate; }
 .energy-low .breath-layer { animation-duration: 5.2s; }
 
+/* 감정 전환 중에는 idle을 완전히 끄지 않고 작은 진폭으로 낮춰 morph와 경쟁하지 않게 한다. */
+.critter-svg.is-transitioning .breath-layer { animation-name: breathe-soft; }
+.critter-svg.is-transitioning:not(.mode-listening).energy-bright .activity-layer { animation-name: bright-bob-soft; }
+.critter-svg.is-transitioning:not(.mode-listening).energy-tense .activity-layer { animation-name: tense-soft; }
+.critter-svg.is-transitioning.mode-listening .activity-layer { animation-name: listen-lean-soft; }
+.critter-svg.is-transitioning.mode-listening .ear-surface-left { animation-name: ear-listen-left-soft; }
+.critter-svg.is-transitioning.mode-listening .ear-surface-right { animation-name: ear-listen-right-soft; }
+.critter-svg.is-transitioning .blink-eye { animation-play-state: paused; }
+
 .species-tabs { display: flex; justify-content: center; gap: 9px; padding-top: 20px; }
 .species-tabs button { display: flex; align-items: center; gap: 7px; min-width: 104px; height: 44px; padding: 5px 13px 5px 7px; border: 1px solid var(--line); border-radius: 13px; background: transparent; cursor: pointer; transition: border-color .18s ease, background .18s ease, transform .15s ease; }
 .species-tabs button:hover { background: #17191d; border-color: #494c54; }
@@ -92,13 +101,19 @@ button:focus-visible { outline: 2px solid #66bdd5; outline-offset: 2px; }
 .motion-note p { margin: 6px 0 0; color: var(--muted); font-family: "Segoe UI Variable", "Malgun Gothic", sans-serif; font-size: 11px; }
 
 @keyframes breathe { 0%, 100% { transform: translateY(0) scale(1, 1); } 50% { transform: translateY(-1px) scale(1.008, 1.018); } }
+@keyframes breathe-soft { 0%, 100% { transform: translateY(0) scale(1, 1); } 50% { transform: translateY(-.18px) scale(1.0015, 1.003); } }
 @keyframes blink { 0%, 45%, 48%, 100% { transform: scaleY(1); } 46.5% { transform: scaleY(.08); } }
 @keyframes listen-lean { 0%, 100% { transform: rotate(-1deg) translateY(0); } 50% { transform: rotate(-3deg) translateY(-1px); } }
+@keyframes listen-lean-soft { 0%, 100% { transform: rotate(-.2deg) translateY(0); } 50% { transform: rotate(-.6deg) translateY(-.2px); } }
 @keyframes ear-listen-left { 0%, 55%, 100% { transform: rotate(0); } 68% { transform: rotate(-5deg); } 78% { transform: rotate(2deg); } }
 @keyframes ear-listen-right { 0%, 55%, 100% { transform: rotate(0); } 68% { transform: rotate(-9deg); } 78% { transform: rotate(3deg); } }
-@keyframes lip-sync { from { transform: scaleY(.9); } to { transform: scaleY(1.14); } }
+@keyframes ear-listen-left-soft { 0%, 55%, 100% { transform: rotate(0); } 68% { transform: rotate(-1deg); } 78% { transform: rotate(.4deg); } }
+@keyframes ear-listen-right-soft { 0%, 55%, 100% { transform: rotate(0); } 68% { transform: rotate(-1.5deg); } 78% { transform: rotate(.6deg); } }
+@keyframes lip-sync { from { transform: scaleY(.92); } to { transform: scaleY(1.1); } }
 @keyframes bright-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+@keyframes bright-bob-soft { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-.5px); } }
 @keyframes tense { from { transform: translateX(-.7px) rotate(-.22deg); } to { transform: translateX(.7px) rotate(.22deg); } }
+@keyframes tense-soft { from { transform: translateX(-.12px) rotate(-.04deg); } to { transform: translateX(.12px) rotate(.04deg); } }
 
 @media (max-width: 1040px) {
   .studio-shell { padding-inline: 18px; }
