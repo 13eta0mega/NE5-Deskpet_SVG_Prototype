@@ -54,21 +54,21 @@ const P = {
 const state = (key, name, english, description, energy, values) => ({ key, name, english, description, energy, pose: { ...P, ...values } });
 const EMOTIONS = [
   state("neutral", "편안", "neutral", "느슨한 눈과 작은 미소", "calm", {}),
-  state("happy", "기쁨", "happy", "눈과 입이 함께 웃어요", "calm", { eyeLRY: 2.2, eyeRRY: 2.2, mouthW: 12, mouthCurve: 5, handLDY: -3, handRDY: -3 }),
-  state("excited", "신남", "excited", "몸이 먼저 튀어 올라요", "bright", { rigY: -5, rigSX: 1.05, rigSY: .96, earLRot: -8, earRRot: 8, eyeLRX: 3.6, eyeLRY: 4, eyeRRX: 3.6, eyeRRY: 4, mouthW: 11, mouthCurve: 8, handLDX: -6, handLDY: -14, handLRot: -22, handRDX: 6, handRDY: -14, handRRot: 22 }),
-  state("love", "사랑", "love", "눈을 감고 손을 모아요", "calm", { rigRot: -2, eyeLRX: 4.6, eyeLRY: .7, eyeRRX: 4.6, eyeRRY: .7, mouthW: 10, mouthCurve: 5, handLDX: 33, handLDY: -8, handLRot: -8, handRDX: -33, handRDY: -8, handRRot: 8 }),
-  state("amused", "웃음", "amused", "참지 못한 큰 웃음", "bright", { rigRot: 2, eyeLRX: 4.2, eyeLRY: .7, eyeRRX: 4.2, eyeRRY: .7, mouthW: 15, mouthCurve: 8, handLDY: -5, handRDY: -7 }),
-  state("proud", "뿌듯", "proud", "턱을 들고 여유롭게", "calm", { rigY: -2, rigRot: -2, eyeLDY: -2, eyeRDY: -2, eyeLRY: 1.8, eyeRRY: 1.8, mouthDX: 2, mouthW: 8, mouthCurve: 3, mouthTilt: -6, handLDX: -3, handRDX: 3 }),
-  state("curious", "궁금", "curious", "한쪽으로 기울여 관찰해요", "calm", { rigRot: 7, rigX: 3, earLRot: 9, earRRot: -14, eyeLDX: 3, eyeRDX: 3, mouthDX: 2, mouthW: 6, mouthCurve: 1, handLDY: -2 }),
-  state("surprised", "놀람", "surprised", "눈과 입이 동시에 커져요", "bright", { rigY: -4, rigSX: .97, rigSY: 1.04, earLRot: -11, earRRot: 11, eyeLRX: 4.1, eyeLRY: 4.4, eyeRRX: 4.1, eyeRRY: 4.4, mouthW: 5, mouthCurve: 10, handLDX: -5, handLDY: -7, handRDX: 5, handRDY: -7 }),
-  state("confused", "혼란", "confused", "양쪽 얼굴이 서로 다르게", "calm", { rigRot: -5, earLRot: 12, earRRot: -4, eyeLRY: 1.6, eyeRRY: 3.2, eyeLDY: 1, eyeRDY: -1, mouthW: 10, mouthCurve: -1, mouthTilt: 8 }),
-  state("shy", "수줍", "shy", "시선을 피하고 손을 모아요", "low", { rigRot: 3, rigY: 2, eyeLDX: -3, eyeRDX: -3, eyeLDY: 2, eyeRDY: 2, eyeLRY: 1.8, eyeRRY: 1.8, mouthDX: -2, mouthW: 6, mouthCurve: 3, handLDX: 30, handLDY: -5, handRDX: -30, handRDY: -5 }),
-  state("sad", "슬픔", "sad", "몸과 귀가 함께 내려가요", "low", { rigY: 4, rigSY: .97, earLRot: 13, earRRot: -13, earLY: 3, earRY: 3, eyeLDY: 2, eyeRDY: 2, eyeLRY: 2.1, eyeRRY: 2.1, mouthW: 12, mouthCurve: -5, handLDY: 3, handRDY: 3 }),
-  state("worried", "걱정", "worried", "작고 불안한 입 모양", "low", { rigRot: -2, earLRot: 8, earRRot: -8, eyeLDY: 1, eyeRDY: 1, eyeLRX: 3.2, eyeRRX: 3.2, eyeLRY: 3.4, eyeRRY: 3.4, mouthW: 8, mouthCurve: -3, mouthTilt: -4, handLDY: -2, handRDY: -2 }),
-  state("angry", "화남", "angry", "낮아진 몸과 날카로운 눈", "tense", { rigY: 3, rigSX: 1.04, rigSY: .96, earLRot: 14, earRRot: -14, eyeLDY: 1, eyeRDY: 1, eyeLRX: 4, eyeLRY: 1.15, eyeRRX: 4, eyeRRY: 1.15, eyeLRot: 18, eyeRRot: -18, mouthW: 12, mouthCurve: -4, handLDX: -4, handRDX: 4 }),
-  state("annoyed", "시큰둥", "annoyed", "눈을 가늘게 뜨고 흘겨봐요", "calm", { rigRot: 2, eyeLDX: 3, eyeRDX: 3, eyeLRY: 1, eyeRRY: 1.5, eyeLDY: 1, eyeRDY: 2, mouthDX: 3, mouthW: 9, mouthCurve: -1, mouthTilt: 5 }),
-  state("sleepy", "졸림", "sleepy", "호흡이 느려지고 눈이 감겨요", "low", { rigY: 4, rigRot: -4, rigSY: .98, earLRot: 7, earRRot: -5, eyeLRX: 4.4, eyeLRY: .55, eyeRRX: 4.4, eyeRRY: .55, eyeLDY: 3, eyeRDY: 3, mouthW: 7, mouthCurve: 1 }),
-  state("crying", "울음", "crying", "두 손을 얼굴 가까이 올려요", "low", { rigY: 3, earLRot: 14, earRRot: -14, eyeLRX: 3.8, eyeLRY: 1.4, eyeRRX: 3.8, eyeRRY: 1.4, eyeLDY: 2, eyeRDY: 2, mouthW: 13, mouthCurve: -7, handLDX: 16, handLDY: -23, handLRot: -12, handRDX: -16, handRDY: -23, handRRot: 12 }),
+  state("happy", "기쁨", "happy", "눈과 입이 함께 웃어요", "calm", { rigY: -1, eyeLRY: 1.8, eyeRRY: 1.8, mouthW: 12.5, mouthCurve: 5.5, handLDY: -3, handRDY: -3 }),
+  state("excited", "신남", "excited", "몸 전체가 가볍게 튀어 올라요", "bright", { rigY: -6, rigSX: 1.04, rigSY: .95, earLRot: -10, earRRot: 10, eyeLRX: 3.8, eyeLRY: 4.2, eyeRRX: 3.8, eyeRRY: 4.2, mouthW: 12, mouthCurve: 8.5, handLDX: -7, handLDY: -15, handLRot: -24, handRDX: 7, handRDY: -15, handRRot: 24 }),
+  state("love", "사랑", "love", "눈을 포근히 감고 손을 모아요", "calm", { rigRot: -2.5, rigY: 1, eyeLRX: 4.8, eyeLRY: .62, eyeRRX: 4.8, eyeRRY: .62, mouthW: 10, mouthCurve: 5.5, handLDX: 32, handLDY: -9, handLRot: -10, handRDX: -32, handRDY: -9, handRRot: 10 }),
+  state("amused", "웃음", "amused", "눈이 접히고 입이 크게 웃어요", "bright", { rigRot: 2, rigY: -2, eyeLRX: 4.4, eyeLRY: .58, eyeRRX: 4.4, eyeRRY: .58, mouthW: 15.5, mouthCurve: 9, handLDY: -6, handRDY: -8 }),
+  state("proud", "뿌듯", "proud", "몸을 세우고 여유롭게 바라봐요", "calm", { rigY: -3, rigRot: -1.5, rigSX: 1.02, rigSY: .99, eyeLDY: -2, eyeRDY: -2, eyeLRY: 1.7, eyeRRY: 1.7, mouthDX: 2, mouthW: 8.5, mouthCurve: 3.5, mouthTilt: -5, handLDX: -3, handRDX: 3 }),
+  state("curious", "궁금", "curious", "고개와 시선이 같은 방향을 따라가요", "calm", { rigRot: 7, rigX: 3, earLRot: 10, earRRot: -15, eyeLDX: 3.5, eyeRDX: 3.5, eyeLDY: -1, eyeRDY: -1, mouthDX: 2, mouthW: 6, mouthCurve: 1, mouthTilt: 3, handLDY: -2 }),
+  state("surprised", "놀람", "surprised", "몸이 늘어나며 눈과 입이 동시에 커져요", "bright", { rigY: -5, rigSX: .96, rigSY: 1.055, earLRot: -12, earRRot: 12, eyeLRX: 4.3, eyeLRY: 4.7, eyeRRX: 4.3, eyeRRY: 4.7, mouthW: 5.3, mouthCurve: 11, handLDX: -6, handLDY: -8, handRDX: 6, handRDY: -8 }),
+  state("confused", "혼란", "confused", "비대칭 눈과 입으로 망설이는 표정", "calm", { rigRot: -5, rigX: -1, earLRot: 12, earRRot: -5, eyeLRY: 1.45, eyeRRY: 3.25, eyeLDY: 1, eyeRDY: -1, eyeLRot: 8, eyeRRot: -4, mouthW: 9.5, mouthCurve: -1.5, mouthTilt: 9 }),
+  state("shy", "수줍", "shy", "시선을 피하며 두 손을 가까이 모아요", "low", { rigRot: 3, rigY: 3, eyeLDX: -3.5, eyeRDX: -3.5, eyeLDY: 2, eyeRDY: 2, eyeLRY: 1.55, eyeRRY: 1.55, mouthDX: -2, mouthW: 5.5, mouthCurve: 3, handLDX: 30, handLDY: -6, handRDX: -30, handRDY: -6 }),
+  state("sad", "슬픔", "sad", "몸과 귀가 내려앉고 시선이 처져요", "low", { rigY: 5, rigSY: .965, earLRot: 14, earRRot: -14, earLY: 4, earRY: 4, eyeLDY: 2.5, eyeRDY: 2.5, eyeLRY: 1.9, eyeRRY: 1.9, mouthW: 12, mouthCurve: -5.5, handLDY: 3, handRDY: 3 }),
+  state("worried", "걱정", "worried", "몸이 살짝 움츠러들고 입이 불안하게 기울어요", "low", { rigY: 2, rigSX: .985, rigSY: 1.01, rigRot: -2.5, earLRot: 9, earRRot: -9, eyeLDY: 1, eyeRDY: 1, eyeLRX: 3.25, eyeRRX: 3.25, eyeLRY: 3.5, eyeRRY: 3.5, mouthW: 7.5, mouthCurve: -3.3, mouthTilt: -5, handLDY: -2, handRDY: -2 }),
+  state("angry", "화남", "angry", "몸을 낮추고 눈을 날카롭게 좁혀요", "tense", { rigY: 4, rigSX: 1.045, rigSY: .95, earLRot: 15, earRRot: -15, eyeLDY: 1.5, eyeRDY: 1.5, eyeLRX: 4.2, eyeLRY: 1.0, eyeRRX: 4.2, eyeRRY: 1.0, eyeLRot: 20, eyeRRot: -20, mouthW: 12, mouthCurve: -4.5, handLDX: -5, handRDX: 5, handLDY: 1, handRDY: 1 }),
+  state("annoyed", "시큰둥", "annoyed", "시선을 옆으로 흘기며 입을 비틀어요", "calm", { rigRot: 2, eyeLDX: 3.5, eyeRDX: 3.5, eyeLRY: .9, eyeRRY: 1.3, eyeLDY: 1, eyeRDY: 2, eyeLRot: 4, mouthDX: 3, mouthW: 9, mouthCurve: -1.5, mouthTilt: 6 }),
+  state("sleepy", "졸림", "sleepy", "몸이 가라앉고 눈이 천천히 감겨요", "low", { rigY: 5, rigRot: -4.5, rigSY: .975, earLRot: 8, earRRot: -6, eyeLRX: 4.5, eyeLRY: .48, eyeRRX: 4.5, eyeRRY: .48, eyeLDY: 3.5, eyeRDY: 3.5, mouthW: 7, mouthCurve: .8 }),
+  state("crying", "울음", "crying", "두 손을 얼굴 가까이 올리고 몸을 웅크려요", "low", { rigY: 4, rigSX: .985, rigSY: .98, earLRot: 15, earRRot: -15, eyeLRX: 3.9, eyeLRY: 1.2, eyeRRX: 3.9, eyeRRY: 1.2, eyeLDY: 2.5, eyeRDY: 2.5, mouthW: 13, mouthCurve: -7.5, handLDX: 17, handLDY: -24, handLRot: -14, handRDX: -17, handRDY: -24, handRRot: 14 }),
 ];
 
 const MODES = [
@@ -78,9 +78,22 @@ const MODES = [
 ];
 
 const copyPose = (pose) => Object.fromEntries(Object.entries(pose).map(([key, value]) => [key, value]));
+const clamp01 = (t) => Math.max(0, Math.min(1, t));
+const smooth = (t) => { const x = clamp01(t); return x * x * (3 - 2 * x); };
 const easeInOut = (t) => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-const delayFor = (key) => key.startsWith("rig") ? 0 : key.startsWith("ear") ? .025 : key.startsWith("eye") || key.startsWith("leg") ? .075 : key.startsWith("mouth") ? .12 : .16;
-const localProgress = (t, delay) => Math.max(0, Math.min(1, (t - delay) / (1 - delay)));
+const easeOutQuint = (t) => 1 - Math.pow(1 - clamp01(t), 5);
+const easeOutBack = (t) => {
+  const x = clamp01(t);
+  const c1 = 1.15;
+  const c3 = c1 + 1;
+  return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2);
+};
+const easingFor = (key, raw) => {
+  if (key.startsWith("eye") || key.startsWith("mouth")) return smooth(raw);
+  if (key.startsWith("ear") || key.startsWith("hand")) return easeOutBack(raw);
+  if (key.startsWith("leg")) return easeOutQuint(raw);
+  return easeInOut(raw);
+};
 
 function setAround(el, pivotX, pivotY, dx, dy, rotation, sx = 1, sy = 1) {
   if (!el) return;
@@ -123,30 +136,42 @@ function MorphCritter({ animal, emotion, mode }) {
       first.current = false;
       return undefined;
     }
+
     cancelAnimationFrame(frame.current);
     const from = copyPose(current.current);
     const to = emotion.pose;
     const start = performance.now();
-    const duration = emotion.energy === "bright" ? 720 : emotion.energy === "low" ? 780 : 650;
+    const duration = emotion.energy === "bright" ? 600 : emotion.energy === "low" ? 650 : emotion.energy === "tense" ? 540 : 560;
+    nodes.current.svg?.classList.add("is-transitioning");
+
     const tick = (now) => {
-      const raw = Math.min(1, (now - start) / duration);
+      const raw = clamp01((now - start) / duration);
       const next = {};
       for (const key of Object.keys(to)) {
-        const t = easeInOut(localProgress(raw, delayFor(key)));
+        const t = easingFor(key, raw);
         next[key] = from[key] + (to[key] - from[key]) * t;
       }
       current.current = next;
       applyPose(nodes.current, animal, next);
-      if (raw < 1) frame.current = requestAnimationFrame(tick);
+      if (raw < 1) {
+        frame.current = requestAnimationFrame(tick);
+      } else {
+        current.current = copyPose(to);
+        nodes.current.svg?.classList.remove("is-transitioning");
+      }
     };
+
     frame.current = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(frame.current);
+    return () => {
+      cancelAnimationFrame(frame.current);
+      nodes.current.svg?.classList.remove("is-transitioning");
+    };
   }, [animal, emotion]);
 
   const ref = (name) => (node) => { nodes.current[name] = node; };
   const b = animal.base;
   return (
-    <svg className={`critter-svg mode-${mode} energy-${emotion.energy}`} viewBox="0 0 200 200" role="img" aria-label={`${animal.name}의 ${emotion.name} 표정`}>
+    <svg ref={ref("svg")} className={`critter-svg mode-${mode} energy-${emotion.energy}`} viewBox="0 0 200 200" role="img" aria-label={`${animal.name}의 ${emotion.name} 표정`}>
       <g className="breath-layer"><g className="activity-layer"><g className="morph-rig" ref={ref("rig")}>
         <rect ref={ref("legL")} x={b.legLX} y={b.legY} width="20" height="27" rx="10" fill={animal.foot} />
         <rect ref={ref("legR")} x={b.legRX} y={b.legY} width="21" height="27" rx="10.5" fill={animal.foot} />
@@ -200,7 +225,7 @@ function App() {
       <aside className="expression-panel" aria-label="감정 선택">
         <div className="panel-title"><div><h1>Expressions</h1><p>하나의 얼굴, 열여섯 감정</p></div><span>{String(EMOTIONS.findIndex((item) => item.key === emotionKey) + 1).padStart(2, "0")}</span></div>
         <div className="expression-list">{EMOTIONS.map((item) => <button key={item.key} aria-pressed={emotionKey === item.key} onClick={() => setEmotionKey(item.key)}><FaceGlyph emotion={item} /><span><strong>{item.name}</strong><small>{item.english}</small></span></button>)}</div>
-        <div className="motion-note"><span>transition</span><p>현재 포즈에서 다음 감정으로 바로 이어집니다.</p></div>
+        <div className="motion-note"><span>transition</span><p>현재 화면의 포즈에서 이어서, 부위별 easing으로 자연스럽게 전환합니다.</p></div>
       </aside>
     </section>
   </main>;
