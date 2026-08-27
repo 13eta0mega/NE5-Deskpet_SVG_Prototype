@@ -1,4 +1,4 @@
-name: Deploy animation-polish-v2 to GitHub Pages
+name: Deploy character-rig-polish-v3 to GitHub Pages
 
 on:
   push:
@@ -19,10 +19,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout animation branch
+      - name: Checkout V3 character branch
         uses: actions/checkout@v4
         with:
-          ref: animation-polish-v2
+          ref: character-rig-polish-v3
 
       - name: Setup Node
         uses: actions/setup-node@v4
