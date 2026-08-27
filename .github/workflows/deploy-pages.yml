@@ -1,25 +1,25 @@
-name: Deploy GitHub Pages
+name: Build and publish character-redesign-v5
 
 on:
   push:
     branches:
-      - animation-polish-v2
+      - character-redesign-v5
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
 concurrency:
-  group: pages
+  group: pages-v5-publish
   cancel-in-progress: true
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout V5 source
         uses: actions/checkout@v4
 
       - name: Setup Node
@@ -31,13 +31,43 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build
+      - name: Validate shared SVG topology
+        run: node scripts/validate-v5-model.mjs
+
+      - name: Generate 16-state visual QA sheet
+        run: node scripts/export-v5-qa.mjs
+
+      - name: Build V5
         run: npm run build
+
+      - name: Checkout main publish branch
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          path: publish
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Sync built site into main
+        shell: bash
+        run: |
+          rm -rf publish/assets
+          cp dist/index.html publish/index.html
+          cp -R dist/assets publish/assets
+          cp dist/v5-emotion-contact-sheet.svg publish/v5-emotion-contact-sheet.svg
+          touch publish/.nojekyll
+          cd publish
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html assets v5-emotion-contact-sheet.svg .nojekyll
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: publish V5 visual-QA build [skip ci]"
+            git push origin HEAD:main
+          fi
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
-      - name: Upload artifact
+      - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./dist
